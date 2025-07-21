@@ -296,7 +296,7 @@ static $TextArray=[];
 static $Row=0;
 static $Col=0;
 if($text===null) return $TextArray;//Return the array. 
-if($text===row) {$Row++;$Col=0;return;}//Start new row
+if($text===row) {if(!empty($TheArray))$Row++;$Col=0;return;}//Start new row
 if(is_array($text)) 
   {
   $text=array_filter($text,function($line){return trim($line)!=='';});
@@ -328,7 +328,7 @@ function WordColumnWidth($Column='',$Width='')
 static $WidthArray=[];
 if($Column=='') {$WidthArray=null;unset($WidthArray);return;}
 if($Column==clear) {$WidthArray=null;unset($WidthArray);return;}
-if($Width=='') return $WidthArray[$Column];
+if($Width=='') return isset($WidthArray[$Column])?$WidthArray[$Column]:'';
 $WidthArray[$Column]=$Width;
 }
 
