@@ -412,5 +412,3 @@ for ($Offset = 0; $Offset <= $MaxOffset; $Offset++)
     // Fallback split at middle
     return mb_substr($Word, 0, $Middle) . '-' . mb_substr($Word, $Middle);
 }
-
-?>
