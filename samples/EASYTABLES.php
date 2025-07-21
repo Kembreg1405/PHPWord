@@ -1,8 +1,8 @@
-<?
+<?php
 
 //***********************************
 //                                  *
-//  This code is dedicated          * 
+//  This code is dedicated          *
 //  to the morons of complexity     *
 //  and the godesses of simplicity  *
 //                                  *
@@ -16,30 +16,30 @@
 //WordTableStyle(clear);
 //WordTableText(clear);
 //
-//WordTableText(row); 
-//WordTableText('Country'); 
-//WordTableText('Food'); 
-//WordTableText('Rating'); 
+//WordTableText(row);
+//WordTableText('Country');
+//WordTableText('Food');
+//WordTableText('Rating');
 //
-//WordTableText(row); 
-//WordTableText('Italy'); 
-//WordTableText('Pizza'); 
-//WordTableText('★★★☆☆'); 
+//WordTableText(row);
+//WordTableText('Italy');
+//WordTableText('Pizza');
+//WordTableText('★★★☆☆');
 //
-//WordTableText(row); 
-//WordTableText('China'); 
-//WordTableText('Rice*'); 
-//WordTableText('★★☆☆☆'); 
+//WordTableText(row);
+//WordTableText('China');
+//WordTableText('Rice*');
+//WordTableText('★★☆☆☆');
 
-//WordTableText(row); 
-//WordTableText('Mexico'); 
-//WordTableText('Tacos'); 
-//WordTableText('★★★★☆'); 
+//WordTableText(row);
+//WordTableText('Mexico');
+//WordTableText('Tacos');
+//WordTableText('★★★★☆');
 
-//WordTableText(row); 
-//WordTableText('Japan'); 
-//WordTableText('Sushi'); 
-//WordTableText('★★★☆☆'); 
+//WordTableText(row);
+//WordTableText('Japan');
+//WordTableText('Sushi');
+//WordTableText('★★★☆☆');
 //
 //PutWordTable();
 
@@ -386,38 +386,29 @@ $vowels = '/[aeiouy]/i';
 $Pairs=ConsonantPairs($Language);
 $MaxOffset = 2;
 
-    // Check for consonant pairs
-    for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
-    {
-        foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) 
-        {
-
-                $Pair = mb_substr($Word, $Pos, 2);
-                if (in_array($Pair, $Pairs)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
-        }
+// Check for consonant pairs
+for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
+  foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) {
+    $Pair = mb_substr($Word, $Pos, 2);
+    if (in_array($Pair, $Pairs)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
     }
+
 
     // Check for identical letters
     for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
-    {
-        foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) 
-        {
-                $Char = mb_substr($Word, $Pos, 1);
-                $Next = mb_substr($Word, $Pos + 1, 1);
-                if ($Char === $Next) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
+        foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) {
+          $Char = mb_substr($Word, $Pos, 1);
+          $Next = mb_substr($Word, $Pos + 1, 1);
+          if ($Char === $Next) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
         }
-    }
-
+    
     // Check for vowels near middle
     for ($Offset = 0; $Offset < $Middle - 1; $Offset++) 
-    {
-        foreach (['back' => $Middle - $Offset, 'forward' => $Middle + $Offset] as $Pos) 
-        {
-                $Char = mb_substr($Word, $Pos, 1);
-                if (preg_match($vowels, $Char)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
+        foreach (['back' => $Middle - $Offset, 'forward' => $Middle + $Offset] as $Pos) {
+        $Char = mb_substr($Word, $Pos, 1);
+        if (preg_match($vowels, $Char)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
         }
-    }
-
+    
     // Fallback split at middle
     return mb_substr($Word, 0, $Middle) . '-' . mb_substr($Word, $Middle);
 }
