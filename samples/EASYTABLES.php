@@ -76,6 +76,11 @@
 
 
 define('clear',8);
+define('left',24);
+define('right',25);
+define('center',26);
+define('row',27);
+define('remove',28);
 define('colorBlue','#3944BC');
 define('colorBlueDark','#0A1172');
 define('colorBlueLight','#59788E');
