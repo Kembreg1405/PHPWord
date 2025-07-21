@@ -296,7 +296,8 @@ static $TextArray=[];
 static $Row=0;
 static $Col=0;
 if($text===null) return $TextArray;//Return the array. 
-if($text===row) {if(!empty($TheArray))$Row++;$Col=0;return;}//Start new row
+if($text===row) if(empty($TextArray))return; //Start new row on on empty array. No go
+if($text===row) {$Row++;$Col=0;return;}//Start new row
 if(is_array($text)) 
   {
   $text=array_filter($text,function($line){return trim($line)!=='';});
