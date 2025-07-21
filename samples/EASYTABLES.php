@@ -57,7 +57,7 @@
 //WordTableStyle('alignTable','left');
 //WordTableStyle('abbreviate',true); //Used for abbrev...
 //WordTableStyle('hyphenate',false);
-//WordTableStyle('langugage','en'); //Used for hyphenation
+//WordTableStyle('language','en'); //Used for hyphenation
 //WordColumnWidth(3,3000);
 //WordColumnAlign(2,'right');
 //WordColumnBold(1,true);
@@ -286,7 +286,7 @@ $Text=$Text[$row-1][$column-1];
 if(mb_strpos($Text,WordTableStyle('fadeCue'))!==false) {$FontStyle['color']=WordTableStyle('colorFaded');$Text=str_replace(WordTableStyle('fadeCue'),'',$Text);}
 $LetterThreshold=Round(WordTableStyle('width')/130);  //Width 2000->Words longer than 15 letters will be hyphenated
 if(WordTableStyle('abbreviate')) $Text=Abbreviated($Text,$LetterThreshold); //Width 2000, abbreviates to 10 letters.  
-if(!WordTableStyle('abbreviate')) if(WordTableStyle('hyphenate')) $Text=Hyphenated($Text,$LetterThreshold,WordTableStyle('langugage'));
+if(!WordTableStyle('abbreviate')) if(WordTableStyle('hyphenate')) $Text=Hyphenated($Text,$LetterThreshold,WordTableStyle('language'));
 AddTableCell($Text,$FontStyle,$SpacingStyle);
 }
 
