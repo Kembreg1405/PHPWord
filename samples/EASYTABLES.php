@@ -56,7 +56,7 @@
 //WordTableStyle('alignment','center');
 //WordTableStyle('alignTable','left');
 //WordTableStyle('abbreviate',true); //Used for abbrev...
-//WordTableStyle('hyphenate',false); 
+//WordTableStyle('hyphenate',false);
 //WordTableStyle('langugage','en'); //Used for hyphenation
 //WordColumnWidth(3,3000);
 //WordColumnAlign(2,'right');
@@ -373,6 +373,11 @@ return ['ck','ct','mp','nd','nt','lt','rt','st','sp','sk','pl','pr','gr','bl','b
 
 function Hyphenated($Word,$Theshold=10,$Language='en') 
 {
+$Middle = (int) floor($Length / 2);
+$vowels = '/[aeiouy]/i';
+$Pairs=ConsonantPairs($Language);
+$MaxOffset = 2;
+  
 if(preg_match('/^\d/',$Word)) return $Word; //Starts with a digit — looks like a number
 if(mb_strpos($Word, '-')!==false) return $Word;
 if(mb_strpos($Word, ' ')!==false) return $Word;
@@ -381,11 +386,6 @@ $Length=mb_strlen($Word);
 if($Length<$Theshold) return $Word;
 if(mb_strpos($Word,'name')!==false) return str_replace('name','-name',$Word);
     
-$Middle = (int) floor($Length / 2);
-$vowels = '/[aeiouy]/i';
-$Pairs=ConsonantPairs($Language);
-$MaxOffset = 2;
-
 // Check for consonant pairs
 for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
   foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) {
@@ -394,21 +394,21 @@ for ($Offset = 0; $Offset <= $MaxOffset; $Offset++)
     }
 
 
-    // Check for identical letters
-    for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
-        foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) {
-          $Char = mb_substr($Word, $Pos, 1);
-          $Next = mb_substr($Word, $Pos + 1, 1);
-          if ($Char === $Next) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
-        }
+// Check for identical letters
+for ($Offset = 0; $Offset <= $MaxOffset; $Offset++) 
+ foreach (['back' => $Middle - $Offset - 1, 'forward' => $Middle + $Offset - 1] as $Pos) {
+   $Char = mb_substr($Word, $Pos, 1);
+   $Next = mb_substr($Word, $Pos + 1, 1);
+   if ($Char === $Next) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
+ }
+  
+// Check for vowels near middle
+for ($Offset = 0; $Offset < $Middle - 1; $Offset++) 
+ foreach (['back' => $Middle - $Offset, 'forward' => $Middle + $Offset] as $Pos) {
+   $Char = mb_substr($Word, $Pos, 1);
+   if (preg_match($vowels, $Char)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
+  }
     
-    // Check for vowels near middle
-    for ($Offset = 0; $Offset < $Middle - 1; $Offset++) 
-        foreach (['back' => $Middle - $Offset, 'forward' => $Middle + $Offset] as $Pos) {
-        $Char = mb_substr($Word, $Pos, 1);
-        if (preg_match($vowels, $Char)) return mb_substr($Word, 0, $Pos + 1) . '-' . mb_substr($Word, $Pos + 1);
-        }
-    
-    // Fallback split at middle
-    return mb_substr($Word, 0, $Middle) . '-' . mb_substr($Word, $Middle);
+// Fallback split at middle
+return mb_substr($Word, 0, $Middle) . '-' . mb_substr($Word, $Middle);
 }
